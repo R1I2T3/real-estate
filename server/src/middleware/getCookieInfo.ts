@@ -15,8 +15,8 @@ export const getCookieInfo = async (c: any, next: any) => {
     if (!user) {
       return c.text("Unauthorized request", 401);
     }
-    c.req.user = user;
-    next();
+    c.set("user", user);
+    await next();
   } catch (error) {
     return c.text("Some Server side error taken place", 500);
   }

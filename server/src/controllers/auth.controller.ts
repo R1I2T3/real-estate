@@ -1,6 +1,7 @@
 import db from "../config/db";
 import { createTokenAndSetCookie } from "../helper/createTokenAndSetCookie";
-export const signup = async (c: any) => {
+import { Context } from "hono";
+export const signup = async (c: Context) => {
   try {
     const { username, email, password } = await c.req.json();
     const isUserPresent = await db.user.findUnique({
@@ -38,7 +39,7 @@ export const signup = async (c: any) => {
   }
 };
 
-export const Login = async (c: any) => {
+export const Login = async (c: Context) => {
   try {
     const { email, password } = await c.req.json();
     const currentUser = await db.user.findUnique({ where: { email } });
