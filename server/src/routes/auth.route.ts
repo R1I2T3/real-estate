@@ -1,16 +1,14 @@
 import { Hono } from "hono";
 import { signup, Login } from "../controllers/auth.controller";
-import { signUpValidator, LoginValidator } from "../helper/validator";
+import { ZodValidator } from "../helper/validator";
 import { getCookieInfo } from "../middleware/getCookieInfo";
-const AuthRoute = new Hono().basePath("/");
 import { deleteCookie } from "hono/cookie";
+import { loginSchema, signUpSchema } from "../schema";
 
-AuthRoute.get("/", (c) => {
-  return c.text("Hello hono");
-});
+const AuthRoute = new Hono().basePath("/");
 
-AuthRoute.post("signup", signUpValidator, signup);
-AuthRoute.post("login", LoginValidator, Login);
+AuthRoute.post("signup", ZodValidator(signUpSchema), signup);
+AuthRoute.post("login", ZodValidator(loginSchema), Login);
 AuthRoute.post("logout", getCookieInfo, (c) => {
   try {
     deleteCookie(c, "real-estate-auth-token");

@@ -5,7 +5,8 @@ import {
   updateUserProfile,
 } from "../controllers/user.controller";
 import { getCookieInfo } from "../middleware/getCookieInfo";
-import { updateProfileValidator } from "../helper/validator";
+import { ZodValidator } from "../helper/validator";
+import { updateSchema } from "../schema";
 const UserRoute = new Hono().basePath("");
 
 UserRoute.get("/a", (c) => {
@@ -18,7 +19,7 @@ UserRoute.get("/:id", getCookieInfo, getUserDetails);
 UserRoute.put(
   "/update",
   getCookieInfo,
-  updateProfileValidator,
+  ZodValidator(updateSchema),
   updateUserProfile
 );
 

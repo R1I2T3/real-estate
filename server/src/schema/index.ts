@@ -1,5 +1,4 @@
-import { password } from "bun";
-import { optional, z } from "zod";
+import { z } from "zod";
 
 export const signUpSchema = z.object({
   username: z.string(),
@@ -23,4 +22,19 @@ export const updateSchema = z.object({
     .min(6, { message: "Min length of password must be 6" })
     .optional(),
   avatar: z.string().optional(),
+});
+
+export const createListingSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  address: z.string(),
+  regularPrice: z.number(),
+  discountPrice: z.number(),
+  bathrooms: z.number(),
+  bedrooms: z.number(),
+  furnished: z.boolean(),
+  parking: z.boolean(),
+  type: z.string(),
+  offer: z.boolean(),
+  imageUrl: z.string(),
 });
