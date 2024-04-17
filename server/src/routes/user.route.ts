@@ -19,7 +19,7 @@ UserRoute.get("/:id", getCookieInfo, getUserDetails);
 UserRoute.put(
   "/update",
   getCookieInfo,
-  ZodValidator(updateSchema),
+  ZodValidator(updateSchema, "form"),
   updateUserProfile
 );
 

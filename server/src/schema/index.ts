@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 export const signUpSchema = z.object({
   username: z.string(),
   email: z.string().email(),
@@ -28,13 +27,12 @@ export const createListingSchema = z.object({
   name: z.string(),
   description: z.string(),
   address: z.string(),
-  regularPrice: z.number(),
-  discountPrice: z.number(),
-  bathrooms: z.number(),
-  bedrooms: z.number(),
-  furnished: z.boolean(),
-  parking: z.boolean(),
+  regularPrice: z.coerce.number(),
+  discountPrice: z.coerce.number(),
+  bathrooms: z.coerce.number(),
+  bedrooms: z.coerce.number(),
+  furnished: z.coerce.boolean(),
+  parking: z.coerce.boolean(),
   type: z.string(),
-  offer: z.boolean(),
-  imageUrl: z.string(),
+  offer: z.coerce.boolean(),
 });

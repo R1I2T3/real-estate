@@ -7,8 +7,8 @@ import { loginSchema, signUpSchema } from "../schema";
 
 const AuthRoute = new Hono().basePath("/");
 
-AuthRoute.post("signup", ZodValidator(signUpSchema), signup);
-AuthRoute.post("login", ZodValidator(loginSchema), Login);
+AuthRoute.post("signup", ZodValidator(signUpSchema, "json"), signup);
+AuthRoute.post("login", ZodValidator(loginSchema, "json"), Login);
 AuthRoute.post("logout", getCookieInfo, (c) => {
   try {
     deleteCookie(c, "real-estate-auth-token");
