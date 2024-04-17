@@ -36,3 +36,17 @@ export const createListingSchema = z.object({
   type: z.string(),
   offer: z.coerce.boolean(),
 });
+
+export const updateListingSchema = z.object({
+  name: z.string().optional(),
+  description: z.string().optional(),
+  address: z.string().optional(),
+  regularPrice: z.coerce.number().optional(),
+  discountPrice: z.coerce.number().optional(),
+  bathrooms: z.coerce.number().optional(),
+  bedrooms: z.coerce.number().optional(),
+  furnished: z.coerce.boolean().optional(),
+  parking: z.coerce.boolean().optional(),
+  type: z.string().optional(),
+  offer: z.coerce.boolean().optional(),
+});

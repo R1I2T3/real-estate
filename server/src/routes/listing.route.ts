@@ -1,10 +1,12 @@
 import { Hono } from "hono";
 import {
   createListing,
+  deleteListing,
   getListingById,
+  updateListing,
 } from "../controllers/listing.controller";
 import { ZodValidator } from "../helper/validator";
-import { createListingSchema } from "../schema";
+import { createListingSchema, updateListingSchema } from "../schema";
 import { getCookieInfo } from "../middleware/getCookieInfo";
 const ListingRoute = new Hono().basePath("");
 
@@ -14,6 +16,12 @@ ListingRoute.post(
   ZodValidator(createListingSchema, "form"),
   createListing
 );
-
 ListingRoute.get("/getlisting/:id", getCookieInfo, getListingById);
+ListingRoute.delete("/delete/:id", getCookieInfo, deleteListing);
+ListingRoute.put(
+  "/update/:id",
+  getCookieInfo,
+  ZodValidator(updateListingSchema, "form"),
+  updateListing
+);
 export default ListingRoute;
