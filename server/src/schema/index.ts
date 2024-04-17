@@ -20,7 +20,6 @@ export const updateSchema = z.object({
     .string()
     .min(6, { message: "Min length of password must be 6" })
     .optional(),
-  avatar: z.string().optional(),
 });
 
 export const createListingSchema = z.object({
@@ -33,7 +32,13 @@ export const createListingSchema = z.object({
   bedrooms: z.coerce.number(),
   furnished: z.coerce.boolean(),
   parking: z.coerce.boolean(),
-  type: z.string(),
+  type: z.enum([
+    "Colonial",
+    "Ranch",
+    "Victorian",
+    "Mid-century Modern",
+    "Craftsman",
+  ]),
   offer: z.coerce.boolean(),
 });
 
@@ -47,6 +52,8 @@ export const updateListingSchema = z.object({
   bedrooms: z.coerce.number().optional(),
   furnished: z.coerce.boolean().optional(),
   parking: z.coerce.boolean().optional(),
-  type: z.string().optional(),
+  type: z
+    .enum(["Colonial", "Ranch", "Victorian", "Mid-century Modern", "Craftsman"])
+    .optional(),
   offer: z.coerce.boolean().optional(),
 });

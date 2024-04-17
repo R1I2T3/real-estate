@@ -3,6 +3,7 @@ import {
   createListing,
   deleteListing,
   getListingById,
+  getListingByType,
   updateListing,
 } from "../controllers/listing.controller";
 import { ZodValidator } from "../helper/validator";
@@ -24,4 +25,5 @@ ListingRoute.put(
   ZodValidator(updateListingSchema, "form"),
   updateListing
 );
+ListingRoute.get("/getlisting", getCookieInfo, getListingByType);
 export default ListingRoute;

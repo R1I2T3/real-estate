@@ -2,6 +2,7 @@ import { Context } from "hono";
 import db from "../config/db";
 import { UploadFileToCloudinary } from "../helper/UploadFileToCloudinary";
 import { v2 as cloudinary } from "cloudinary";
+
 export const createListing = async (c: Context) => {
   try {
     const parsedData = c.get("parsedData");
@@ -35,7 +36,7 @@ export const getListingById = async (c: Context) => {
     return c.json(Listing, 200);
   } catch (error) {
     console.log(error);
-    return c.text("Internal server error", 500);
+    return c.text("Internal server error while getting listing", 500);
   }
 };
 
@@ -46,7 +47,7 @@ export const deleteListing = async (c: Context) => {
     return c.text("Listing deleted successfully", 204);
   } catch (error: any) {
     console.log(error.message);
-    return c.text("Internal server error", 500);
+    return c.text("Internal server error while deleting listing", 500);
   }
 };
 
@@ -78,6 +79,20 @@ export const updateListing = async (c: Context) => {
     );
   } catch (error: any) {
     console.log(error.message);
-    return c.text("Internal server error", 500);
+    return c.text("Internal server error while updating listing", 500);
+  }
+};
+
+export const getListingByType = async (c: Context) => {
+  try {
+    const { q } = c.req.query();
+    const Listings = await db.listing.findMany({ where: { type: q } });
+    if (Listings.length === 0) {
+      return c.text("There is no Listing with this type", 404);
+    }
+    return c.json({ Listings }, 200);
+  } catch (error: any) {
+    console.log(error.message);
+    return c.text("Failed to getListing By Type", 500);
   }
 };

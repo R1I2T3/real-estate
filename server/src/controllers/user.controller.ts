@@ -1,6 +1,7 @@
 import db from "../config/db";
 import { Context } from "hono";
 import { v2 as cloudinary } from "cloudinary";
+import { UploadFileToCloudinary } from "../helper/UploadFileToCloudinary";
 
 export const getUserDetails = async (c: Context) => {
   try {
@@ -27,15 +28,15 @@ export const updateUserProfile = async (c: Context) => {
     if (!currentInfo || id !== currentInfo.id) {
       return c.text("You are not authorized to perform this action", 401);
     }
-    const { username, password, avatar } = await c.req.json();
-    if (avatar) {
+    const { avatar } = await c.req.parseBody();
+    const { username, password } = c.get("parsedData");
+    if (avatar && avatar instanceof File) {
       if (currentInfo.avatar) {
         await cloudinary.uploader.upload(
           currentInfo.avatar.split("/").pop()?.split(".")[0] as string
         );
       }
-      avatarUrl = (await cloudinary.uploader.upload(avatar as string))
-        .secure_url;
+      avatarUrl = await UploadFileToCloudinary(avatar, c);
     }
     let newHashedPassword;
     if (password) {
