@@ -12,7 +12,7 @@ AuthRoute.post("login", ZodValidator(loginSchema, "json"), Login);
 AuthRoute.post("logout", getCookieInfo, (c) => {
   try {
     deleteCookie(c, "real-estate-auth-token");
-    return c.text("User logged out successfully");
+    return c.json({ message: "User logged out successfully" }, 201);
   } catch (error) {
     return c.text("Error while logged out");
   }

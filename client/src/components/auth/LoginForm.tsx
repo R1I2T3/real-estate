@@ -13,6 +13,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
+import { useLoginMutation } from "@/lib/api/auth";
 const LoginForm = () => {
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -21,8 +22,9 @@ const LoginForm = () => {
       password: "",
     },
   });
+  const { isPending, mutateAsync: LoginMutate } = useLoginMutation();
   function onSubmit(values: z.infer<typeof LoginSchema>) {
-    console.log(values);
+    LoginMutate(values);
   }
   return (
     <Form {...form}>
@@ -59,7 +61,11 @@ const LoginForm = () => {
         >
           <p className="text-right mt-3">Don't have account then signup</p>
         </Link>
-        <Button className="w-full py-3" type="submit">
+        <Button
+          className={`w-full py-3 ${isPending ? "bg-slate-700" : ""}`}
+          type="submit"
+          disabled={isPending}
+        >
           Login
         </Button>
       </form>

@@ -4,6 +4,8 @@ import SignUp from "@/pages/auth/signup";
 import AuthLayout from "@/pages/auth/AuthLayout";
 import ProtectedLayout from "@/pages/protected/ProtectedLayout";
 import Home from "@/pages/protected/Home";
+import { Toaster } from "@/components/ui/toaster";
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -16,6 +18,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
         </Route>
       </Routes>
+      <Toaster />
     </BrowserRouter>
   );
 };

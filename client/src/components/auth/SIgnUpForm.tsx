@@ -13,6 +13,7 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useSignUpMutation } from "@/lib/api/auth";
 const SignUpForm = () => {
   const form = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
@@ -22,8 +23,9 @@ const SignUpForm = () => {
       password: "",
     },
   });
+  const { isPending, mutateAsync: SignUpMutate } = useSignUpMutation();
   function onSubmit(values: z.infer<typeof SignUpSchema>) {
-    console.log(values);
+    SignUpMutate(values);
   }
   return (
     <Form {...form}>
@@ -73,7 +75,11 @@ const SignUpForm = () => {
         >
           <p className="mt-4 text-right">Already have account then Login</p>
         </Link>
-        <Button className="w-full text-[14px]" type="submit">
+        <Button
+          className={`w-full text-[14px] ${isPending ? "bg-slate-700" : ""}`}
+          type="submit"
+          disabled={isPending}
+        >
           Sign up
         </Button>
       </form>

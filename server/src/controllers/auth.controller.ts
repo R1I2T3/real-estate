@@ -8,7 +8,7 @@ export const signup = async (c: Context) => {
       where: { email },
     });
     if (isUserPresent) {
-      return c.text("Email is already in used", 400);
+      return c.json({ error: "Email is already in used" }, 400);
     }
     const hashPassword = await Bun.password.hash(password, {
       algorithm: "bcrypt",
@@ -22,7 +22,10 @@ export const signup = async (c: Context) => {
       },
     });
     if (!newUser) {
-      return c.text("Some error take place while registering account", 500);
+      return c.json(
+        { error: "Some error take place while registering account" },
+        500
+      );
     }
     await createTokenAndSetCookie(c, newUser.id);
     return c.json(
@@ -35,7 +38,7 @@ export const signup = async (c: Context) => {
     );
   } catch (error: any) {
     console.log(error.message);
-    return c.text("Some error taken place on server", 500);
+    return c.json({ error: "Some error taken place on server" }, 500);
   }
 };
 
@@ -44,14 +47,14 @@ export const Login = async (c: Context) => {
     const { email, password } = await c.req.json();
     const currentUser = await db.user.findUnique({ where: { email } });
     if (!currentUser) {
-      return c.text("Invalid credentials", 401);
+      return c.json({ error: "Invalid credentials" }, 401);
     }
     const isPasswordCorrect = await Bun.password.verify(
       password,
       currentUser.password
     );
     if (!isPasswordCorrect) {
-      return c.text("Invalid credentials", 401);
+      return c.json({ error: "Invalid credentials" }, 401);
     }
     await createTokenAndSetCookie(c, currentUser.id);
     return c.json(
@@ -64,6 +67,6 @@ export const Login = async (c: Context) => {
     );
   } catch (error: any) {
     console.log(error.message);
-    return c.text("Some error taken place on server", 500);
+    return c.json({ error: "Some error taken place on server" }, 500);
   }
 };

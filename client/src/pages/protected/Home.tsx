@@ -1,7 +1,7 @@
 import React from "react";
-
+import { LogOutButton } from "@/components/protected/LogOutButton";
 const Home = () => {
-  return <div>Home</div>;
+  return <LogOutButton />;
 };
 
 export default Home;
