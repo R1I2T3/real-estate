@@ -1,7 +1,6 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
-import { useContext, useEffect } from "react";
-import { AuthContext } from "@/context/userContext";
+import { useEffect } from "react";
 
 const AuthLayout = () => {
   const navigate = useNavigate();

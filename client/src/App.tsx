@@ -5,6 +5,7 @@ import AuthLayout from "@/pages/auth/AuthLayout";
 import ProtectedLayout from "@/pages/protected/ProtectedLayout";
 import Home from "@/pages/protected/Home";
 import { Toaster } from "@/components/ui/toaster";
+import CreateListing from "./pages/protected/CreateListing";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
         </Route>
         <Route element={<ProtectedLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/createlisting" element={<CreateListing />} />
         </Route>
       </Routes>
       <Toaster />
