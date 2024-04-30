@@ -1,4 +1,4 @@
-export interface ListingFormData {
+export interface getListingFormData {
   name: string;
   description: string;
   address: string;
@@ -10,4 +10,5 @@ export interface ListingFormData {
   parking: boolean;
   type: string;
   offer: boolean;
+  imageUrl: string;
 }

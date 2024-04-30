@@ -12,8 +12,7 @@ export const UploadFileToCloudinary = async (file: File, c: Context) => {
     const response = await cloudinary.uploader.upload(path);
     return response.secure_url;
   } catch (error) {
-    // return c.text("Failed to upload file", 500);
-    throw new Error("Failed to upload file");
+    return c.json({ error: "Failed to upload file" });
   } finally {
     await unlink(path);
   }

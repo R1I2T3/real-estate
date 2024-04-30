@@ -1,38 +1,65 @@
-import { createListingSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
-import { z } from "zod";
+import { Schema, z } from "zod";
 import { Form } from "../ui/form";
 import { Card } from "../ui/card";
-import CustomInput from "../customFormfiels/CustomInput";
-import CustomRadioGroup from "../customFormfiels/CustomRadioGroup";
-import CustomSelect from "../customFormfiels/CustomSelect";
-import CustomText from "../customFormfiels/CustomTextField";
-const ListingForm = () => {
-  const form = useForm<z.infer<typeof createListingSchema>>({
-    resolver: zodResolver(createListingSchema),
+import CustomInput from "../customFormFields/CustomInput";
+import CustomRadioGroup from "../customFormFields/CustomRadioGroup";
+import CustomSelect from "../customFormFields/CustomSelect";
+import CustomText from "../customFormFields/CustomTextField";
+import ImageDragDrop from "./ImageDragDrop";
+import { Button } from "../ui/button";
+import { useState } from "react";
+import { getListingFormData } from "@/types";
+interface ListingFormProps {
+  InputFormData?: getListingFormData;
+  zodSchema: Schema;
+  mutationFunction: (formdata: any) => any;
+}
+const ListingForm = ({ zodSchema, mutationFunction }: ListingFormProps) => {
+  const [image, setImage] = useState<File>();
+  const form = useForm<z.infer<typeof zodSchema>>({
+    resolver: zodResolver(zodSchema),
     defaultValues: {
       name: "",
       address: "",
       description: "",
-      regularPrice: 0,
-      discountPrice: 0,
-      bedrooms: 0,
-      bathrooms: 0,
+      regularPrice: "",
+      discountPrice: "",
+      bedrooms: "",
+      bathrooms: "",
       parking: "No",
       offer: "No",
       furnished: "No",
       type: "Colonial",
     },
   });
-  const onSubmit = (values: z.infer<typeof createListingSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof zodSchema>) => {
+    try {
+      const formData = new FormData();
+      for (const [key, value] of Object.entries(values)) {
+        if (typeof value == "string") {
+          formData.append(key, value);
+        }
+      }
+      if (image instanceof File) {
+        formData.append("image", image);
+      }
+      const result = await mutationFunction(formData);
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const imageSelectCallback = (File: File) => {
+    setImage(File);
+    return;
   };
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex justify-between"
+        className="flex justify-between flex-col md:flex-row gap-3"
       >
         <Card className="w-[99%]  md:w-[55%] p-3 space-y-6  flex flex-col justify-center">
           <FormProvider {...form}>
@@ -90,6 +117,12 @@ const ListingForm = () => {
             />
           </FormProvider>
         </Card>
+        <div className="w-[99%] h-[200px] md:w-[40%] md:h-[600px] flex flex-col gap-7 mb-3">
+          <ImageDragDrop imageSelectCallback={imageSelectCallback} />
+          <Button className="h-30 bg-orange-500 hover:bg-orange-800 ">
+            Submit
+          </Button>
+        </div>
       </form>
     </Form>
   );

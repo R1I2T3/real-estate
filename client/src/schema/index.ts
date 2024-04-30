@@ -12,21 +12,18 @@ export const SignUpSchema = z.object({
 });
 const radioButtonSchema = z
   .string()
-  .refine((value) => value === "Yes" || value === "No", {
-    message: 'Please select "yes" or "no".',
-    path: ["radioButton"], // Optional: Set the error path for clarity
-  });
+  .transform((val) => (val === "Yes" ? "true" : "false"));
 export const createListingSchema = z.object({
   name: z.string().min(1, { message: "Name field is required" }),
   description: z
     .string()
     .min(30, { message: "Min length of description should be 30" })
     .max(100, { message: "Max length of description should be 100" }),
-  address: z.string().min(1, { message: "Address is required" }),
-  regularPrice: z.number(),
-  discountPrice: z.number(),
-  bathrooms: z.number(),
-  bedrooms: z.number(),
+  address: z.string().min(1, { message: "Address is required" }).trim(),
+  regularPrice: z.string(),
+  discountPrice: z.string(),
+  bathrooms: z.string(),
+  bedrooms: z.string(),
   furnished: radioButtonSchema,
   parking: radioButtonSchema,
   type: z.enum([

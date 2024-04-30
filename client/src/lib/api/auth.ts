@@ -29,7 +29,7 @@ export const useSignUpMutation = () => {
           title: data.error,
         });
       }
-      navigate("/");
+      navigate("/", { replace: true });
     },
   });
   return mutation;

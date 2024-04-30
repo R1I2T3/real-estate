@@ -22,7 +22,7 @@ export const createListing = async (c: Context) => {
     return c.json(newListing, 201);
   } catch (error: any) {
     console.log(error.message);
-    return c.text("Failed to create user listing", 500);
+    return c.json({ error: "Failed to create user listing" }, 500);
   }
 };
 
