@@ -31,23 +31,46 @@ export const getListingById = async (c: Context) => {
     const listingId = c.req.param("id");
     const Listing = await db.listing.findUnique({ where: { id: listingId } });
     if (!Listing) {
-      return c.text("Wrong listing is provided", 500);
+      return c.json({ error: "Wrong listing is provided" }, 500);
     }
     return c.json(Listing, 200);
   } catch (error) {
     console.log(error);
-    return c.text("Internal server error while getting listing", 500);
+    return c.json(
+      { error: "Internal server error while getting listing" },
+      500
+    );
   }
 };
 
 export const deleteListing = async (c: Context) => {
   try {
     const listingId = c.req.param("id");
+    const userID = c.get("user").id;
+    const currentListing = await db.listing.findUnique({
+      where: { id: listingId },
+      select: { userID: true, imageUrl: true },
+    });
+    if (!currentListing) {
+      return c.json({ error: "This Listing does not exists" }, 404);
+    }
+    if (userID !== currentListing.userID) {
+      return c.json(
+        { error: "You are not authorized to perform such action" },
+        401
+      );
+    }
+    await cloudinary.uploader.destroy(
+      currentListing?.imageUrl.split("/").pop()?.split(".")[0] as string
+    );
     await db.listing.delete({ where: { id: listingId } });
-    return c.text("Listing deleted successfully", 204);
+    return c.json({ error: "Listing deleted successfully" }, 204);
   } catch (error: any) {
     console.log(error.message);
-    return c.text("Internal server error while deleting listing", 500);
+    return c.json(
+      { error: "Internal server error while deleting listing" },
+      500
+    );
   }
 };
 

@@ -17,8 +17,7 @@ export const createListingSchema = z.object({
   name: z.string().min(1, { message: "Name field is required" }),
   description: z
     .string()
-    .min(30, { message: "Min length of description should be 30" })
-    .max(100, { message: "Max length of description should be 100" }),
+    .min(30, { message: "Min length of description should be 30" }),
   address: z.string().min(1, { message: "Address is required" }).trim(),
   regularPrice: z.string(),
   discountPrice: z.string(),
@@ -33,5 +32,21 @@ export const createListingSchema = z.object({
     "Mid-century Modern",
     "Craftsman",
   ]),
+  offer: radioButtonSchema,
+});
+
+export const updateFormSchema = z.object({
+  name: z.string().optional(),
+  description: z.string().optional(),
+  address: z.string().min(1, { message: "Address is required" }).trim(),
+  regularPrice: z.string().optional(),
+  discountPrice: z.string().optional(),
+  bathrooms: z.string().optional(),
+  bedrooms: z.string().optional(),
+  furnished: radioButtonSchema.optional(),
+  parking: radioButtonSchema,
+  type: z
+    .enum(["Colonial", "Ranch", "Victorian", "Mid-century Modern", "Craftsman"])
+    .optional(),
   offer: radioButtonSchema,
 });

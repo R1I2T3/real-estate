@@ -4,9 +4,10 @@ import SignUp from "@/pages/auth/signup";
 import AuthLayout from "@/pages/auth/AuthLayout";
 import ProtectedLayout from "@/pages/protected/ProtectedLayout";
 import Home from "@/pages/protected/Home";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import CreateListing from "./pages/protected/CreateListing";
-
+import UpdateListing from "./pages/protected/UpdateListing";
+import GetListingFromId from "./pages/protected/GetListingFromId";
 const App = () => {
   return (
     <BrowserRouter>
@@ -18,9 +19,11 @@ const App = () => {
         <Route element={<ProtectedLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/createlisting" element={<CreateListing />} />
+          <Route path="/updatelisting/:id" element={<UpdateListing />} />
+          <Route path="getlisting/:id" element={<GetListingFromId />} />
         </Route>
       </Routes>
-      <Toaster />
+      <Toaster richColors />
     </BrowserRouter>
   );
 };
