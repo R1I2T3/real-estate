@@ -8,6 +8,9 @@ import { Toaster } from "@/components/ui/sonner";
 import CreateListing from "./pages/protected/CreateListing";
 import UpdateListing from "./pages/protected/UpdateListing";
 import GetListingFromId from "./pages/protected/GetListingFromId";
+import GetProfile from "./pages/protected/GetProfile";
+import GetUserListing from "./pages/protected/GetUserListing";
+import UpdateProfile from "./pages/protected/UpdateProfile";
 const App = () => {
   return (
     <BrowserRouter>
@@ -20,7 +23,10 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/createlisting" element={<CreateListing />} />
           <Route path="/updatelisting/:id" element={<UpdateListing />} />
-          <Route path="getlisting/:id" element={<GetListingFromId />} />
+          <Route path="/getlisting/:id" element={<GetListingFromId />} />
+          <Route path="/getprofile/:id" element={<GetProfile />} />
+          <Route path="/getuserlisting/:id" element={<GetUserListing />} />
+          <Route path="/updateprofile/:id" element={<UpdateProfile />} />
         </Route>
       </Routes>
       <Toaster richColors />

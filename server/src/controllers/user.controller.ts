@@ -8,15 +8,21 @@ export const getUserDetails = async (c: Context) => {
     const id = c.req.param("id");
     const user = await db.user.findUnique({
       where: { id },
-      select: { username: true, email: true, avatar: true, createdAt: true },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        avatar: true,
+        createdAt: true,
+      },
     });
     if (!user) {
-      return c.text("User not found");
+      return c.json({ error: "User not found" }, 404);
     }
     return c.json({ user, success: true }, 200);
   } catch (error: any) {
     console.log(error.message);
-    return c.text("Internal server error", 500);
+    return c.json({ error: "Internal server error" }, 500);
   }
 };
 
