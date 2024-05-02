@@ -2,13 +2,9 @@ import { Button } from "../ui/button";
 import { CustomAlertDialog } from "../CustomAlterBox";
 import { useNavigate } from "react-router-dom";
 import { useDeleteListingMutation } from "@/lib/api/listing";
-import Spinner from "../spinner";
 const GetListingCardInfoFooter = ({ ListingId }: { ListingId: string }) => {
   const navigate = useNavigate();
   const { mutateAsync: DeleteListing, isPending } = useDeleteListingMutation();
-  if (isPending) {
-    return <Spinner />;
-  }
   const onDeleteListing = async () => {
     await DeleteListing(ListingId);
   };
@@ -19,8 +15,11 @@ const GetListingCardInfoFooter = ({ ListingId }: { ListingId: string }) => {
         purpose="deleteListing"
         onClickFunction={onDeleteListing}
       >
-        <Button className="bg-red-600 w-[100%] md:[40%] hover:bg-red-800">
-          Delete
+        <Button
+          className="bg-red-600 w-[100%] md:[40%] hover:bg-red-800 "
+          disabled={isPending}
+        >
+          {isPending ? "Deleting..." : "Delete"}
         </Button>
       </CustomAlertDialog>
       <CustomAlertDialog

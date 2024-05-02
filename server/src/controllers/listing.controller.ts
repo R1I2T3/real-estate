@@ -64,7 +64,10 @@ export const deleteListing = async (c: Context) => {
       currentListing?.imageUrl.split("/").pop()?.split(".")[0] as string
     );
     await db.listing.delete({ where: { id: listingId } });
-    return c.json({ error: "Listing deleted successfully" }, 204);
+    return c.json(
+      { message: "Listing deleted successfully", success: true },
+      202
+    );
   } catch (error: any) {
     console.log(error.message);
     return c.json(

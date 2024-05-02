@@ -52,7 +52,6 @@ export const useDeleteListingMutation = () => {
           "content-type": "application/json",
         },
       });
-      console.log(response);
       return await response.json();
     },
     onError: (error) => {
