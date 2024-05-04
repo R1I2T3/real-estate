@@ -11,32 +11,45 @@ import ImageDragDrop from "./ImageDragDrop";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { getListingFormData } from "@/types";
+import { ProcessDataForFormUpdate } from "@/utils";
 interface ListingFormProps {
   InputFormData?: getListingFormData;
   zodSchema: Schema;
   mutationFunction: (formdata: any) => any;
+  isUpdate?: boolean;
 }
-const ListingForm = ({ zodSchema, mutationFunction }: ListingFormProps) => {
+const ListingForm = ({
+  zodSchema,
+  mutationFunction,
+  InputFormData,
+  isUpdate = false,
+}: ListingFormProps) => {
   const [image, setImage] = useState<File>();
   const form = useForm<z.infer<typeof zodSchema>>({
     resolver: zodResolver(zodSchema),
     defaultValues: {
-      name: "",
-      address: "",
-      description: "",
-      regularPrice: "",
-      discountPrice: "",
-      bedrooms: "",
-      bathrooms: "",
-      parking: "No",
-      offer: "No",
-      furnished: "No",
-      type: "Colonial",
+      name: InputFormData?.name || "",
+      address: InputFormData?.address || "",
+      description: InputFormData?.description || "",
+      regularPrice: InputFormData?.regularPrice?.toString() || "",
+      discountPrice: InputFormData?.discountPrice?.toString() || "",
+      bedrooms: InputFormData?.bedrooms?.toString() || "",
+      bathrooms: InputFormData?.bathrooms?.toString() || "",
+      parking: (InputFormData?.parking ? "Yes" : "No") || "No",
+      offer: (InputFormData?.offer ? "Yes" : "No") || "No",
+      furnished: (InputFormData?.furnished ? "Yes" : "No") || "No",
+      type: InputFormData?.type || "Colonial",
     },
   });
   const onSubmit = async (values: z.infer<typeof zodSchema>) => {
     try {
       const formData = new FormData();
+      const processedData = ProcessDataForFormUpdate(
+        InputFormData,
+        values,
+        isUpdate
+      );
+      console.log(processedData);
       for (const [key, value] of Object.entries(values)) {
         if (typeof value == "string") {
           formData.append(key, value);
@@ -59,9 +72,9 @@ const ListingForm = ({ zodSchema, mutationFunction }: ListingFormProps) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex justify-between flex-col md:flex-row gap-3"
+        className="flex justify-between flex-col lg:flex-row gap-3 mb-3 items-center "
       >
-        <Card className="w-[99%]  md:w-[55%] p-3 space-y-6  flex flex-col justify-center">
+        <Card className="w-[99%]  md:w-[80%] lg:w-[55%] p-3 space-y-6  flex flex-col justify-center ">
           <FormProvider {...form}>
             <CustomInput
               Name="name"
@@ -94,14 +107,14 @@ const ListingForm = ({ zodSchema, mutationFunction }: ListingFormProps) => {
                 <CustomInput
                   Name="bedrooms"
                   placeholder="Enter the number of bedrooms"
-                  type="number"
+                  type="text"
                 />
               </div>
               <div className="w-[47%]">
                 <CustomInput
                   Name="bathrooms"
                   placeholder="Enter the number of bathrooms"
-                  type="number"
+                  type="text"
                 />
               </div>
             </div>
@@ -117,11 +130,20 @@ const ListingForm = ({ zodSchema, mutationFunction }: ListingFormProps) => {
             />
           </FormProvider>
         </Card>
-        <div className="w-[99%] h-[200px] md:w-[40%] md:h-[600px] flex flex-col gap-7 mb-3">
-          <ImageDragDrop imageSelectCallback={imageSelectCallback} />
-          <Button className="h-30 bg-orange-500 hover:bg-orange-800 ">
-            Submit
+        <div className="w-[99%] h-[200px] md:w-[80%] md:h-[600px] lg:w-[40%] lg:h-[600px] flex flex-col  gap-4 mb-3">
+          <ImageDragDrop
+            imageSelectCallback={imageSelectCallback}
+            imageUrl={InputFormData?.imageUrl}
+            isUpdate
+          />
+          <Button className=" bg-orange-500 hover:bg-orange-800 ">
+            {isUpdate ? "Update" : "Submit"}
           </Button>
+          {isUpdate ? (
+            <Button className="bg-red-500 hover:bg-red-800 ">Cancel</Button>
+          ) : (
+            ""
+          )}
         </div>
       </form>
     </Form>

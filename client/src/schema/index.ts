@@ -48,7 +48,7 @@ export const updateFormSchema = z.object({
   type: z
     .enum(["Colonial", "Ranch", "Victorian", "Mid-century Modern", "Craftsman"])
     .optional(),
-  offer: radioButtonSchema,
+  offer: radioButtonSchema.optional(),
 });
 
 export const updateProfileSchema = z.object({

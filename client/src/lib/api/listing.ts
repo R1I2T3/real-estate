@@ -71,3 +71,31 @@ export const useDeleteListingMutation = () => {
   });
   return mutation;
 };
+
+export const useUpdateListingMutation = (id: string) => {
+  const navigate = useNavigate();
+  const mutation = useMutation({
+    mutationFn: async (data: any) => {
+      console.log(data);
+      const response = await fetch(`/api/listing/update/${id}`, {
+        method: "PUT",
+        body: data,
+      });
+      return await response.json();
+    },
+    onError: (error) => {
+      console.log(error);
+      toast.error("Unexpected server side error Happened");
+      navigate(-1);
+    },
+    onSuccess: (data) => {
+      if (data.error) {
+        toast.error(data.error);
+      } else {
+        toast.success("Listing Updated successfully");
+      }
+      navigate(-1);
+    },
+  });
+  return mutation;
+};

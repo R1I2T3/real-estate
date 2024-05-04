@@ -20,7 +20,7 @@ const ProtectedLayout = () => {
     checkUserIsAuthenticated();
   }, [navigate]);
   return (
-    <main>
+    <main className="mb-10">
       <Outlet />
     </main>
   );

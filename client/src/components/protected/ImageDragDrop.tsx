@@ -2,8 +2,14 @@ import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 interface ImageDragAndDropProps {
   imageSelectCallback: (file: File) => void;
+  isUpdate?: boolean;
+  imageUrl?: string;
 }
-const ImageDragDrop = ({ imageSelectCallback }: ImageDragAndDropProps) => {
+const ImageDragDrop = ({
+  imageSelectCallback,
+  isUpdate = false,
+  imageUrl = "",
+}: ImageDragAndDropProps) => {
   const [previewImage, setPreviewImage] = useState(null);
   const onDrop = useCallback(
     (acceptedFiles) => {
@@ -23,13 +29,19 @@ const ImageDragDrop = ({ imageSelectCallback }: ImageDragAndDropProps) => {
   return (
     <div
       {...getRootProps()}
-      className="w-[100%] h-full flex justify-center items-center  bg-slate-100"
+      className="w-[100%] h-[200px] md:w-[100%] md:h-[100%]  flex justify-center items-center bg-slate-200 my-10 lg:my-0"
     >
       <input {...getInputProps()} />
       {previewImage ? (
-        <img src={previewImage} alt="This is image" />
+        <img
+          src={previewImage}
+          alt="This is image"
+          className="w-[100%] h-[200px] md:h-[100%] lg:h-[100%] lg:w-[100%]"
+        />
+      ) : isUpdate ? (
+        <img src={imageUrl} alt="This is placeholder for an image" />
       ) : (
-        <p>Drag ' drop some or select image</p>
+        <p>Drag n' drop some or select image</p>
       )}
     </div>
   );

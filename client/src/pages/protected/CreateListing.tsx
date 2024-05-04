@@ -13,6 +13,7 @@ const CreateListing = () => {
       <ListingForm
         zodSchema={createListingSchema}
         mutationFunction={createListingMutate}
+        isUpdate={false}
       />
     </div>
   );

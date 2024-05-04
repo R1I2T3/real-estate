@@ -30,7 +30,7 @@ const GetListingFromId = () => {
   }
   return (
     <div className="w-[100%] md:min-h-[100dvh]  flex justify-center items-center ">
-      <Card className="w-[90%] md:w-[80%] py-4 flex flex-col-reverse md:flex-row md:justify-around justify-between items-center">
+      <Card className="w-[90%] md:w-[80%] py-3 flex flex-col-reverse md:flex-row md:justify-around justify-between items-center my-5">
         <GetListingCardInfo data={data} />
         <img
           src={data.imageUrl}

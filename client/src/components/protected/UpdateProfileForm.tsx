@@ -6,7 +6,7 @@ import { updateProfileSchema } from "@/schema";
 import { FormProvider, useForm } from "react-hook-form";
 import UpdateProfileFooter from "@/components/protected/UpdateProfileFooter";
 import { useState } from "react";
-import ImageSelectUpdateProfile from "@/pages/protected/ImageSelectUpdateProfile";
+import ImageSelectUpdateProfile from "@/components/protected/ImageSelectUpdateProfile";
 import { useUpdateProfileMutation } from "@/lib/api/user";
 import Spinner from "../spinner";
 

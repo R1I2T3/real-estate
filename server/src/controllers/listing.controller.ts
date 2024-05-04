@@ -101,11 +101,14 @@ export const updateListing = async (c: Context) => {
     });
     return c.json(
       { data: updatedListing, message: "Listing Updated successfully" },
-      204
+      202
     );
   } catch (error: any) {
     console.log(error.message);
-    return c.text("Internal server error while updating listing", 500);
+    return c.json(
+      { error: "Internal server error while updating listing" },
+      500
+    );
   }
 };
 
