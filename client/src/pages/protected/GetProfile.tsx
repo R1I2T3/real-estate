@@ -5,7 +5,9 @@ import { useGetUserProfileInfoQuery } from "@/lib/api/user";
 import { Card } from "@/components/ui/card";
 import { ConvertDateFormat } from "@/utils";
 import UserProfileCardFooter from "@/components/protected/UserProfileCardFooter";
-import GetProfileCardSection from "./GetProfileCardSection";
+import GetProfileCardSection from "../../components/protected/GetProfileCardSection";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 const GetProfile = () => {
   const { id } = useParams();
   const { isPending, isError, data } = useGetUserProfileInfoQuery(id!);
@@ -34,11 +36,13 @@ const GetProfile = () => {
     <div className="flex justify-center items-center min-h-[100dvh]">
       <Card className="w-[90%] md:w-[40%] flex flex-col gap-3 justify-center  border-slate-300 p-4">
         <div className="w-[100%]  rounded-full flex justify-center">
-          <img
-            src={data?.user.avatar || "/defaultPic.png"}
-            alt="profile pic"
-            className="w-[30%] md:w-[25%] lg:w-[20%]"
-          />
+          <Avatar className="w-[100px] h-[100px] m-auto">
+            <AvatarImage
+              src={data?.user.avatar || "/defaultPic.png"}
+              // className="w-[200px] h-[200px]"
+            />
+            <AvatarFallback>PF</AvatarFallback>
+          </Avatar>
         </div>
         <GetProfileCardSection Attribute="Email" value={data?.user.email} />
         <GetProfileCardSection

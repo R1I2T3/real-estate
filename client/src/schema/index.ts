@@ -50,3 +50,8 @@ export const updateFormSchema = z.object({
     .optional(),
   offer: radioButtonSchema,
 });
+
+export const updateProfileSchema = z.object({
+  username: z.string().optional(),
+  password: z.string().optional(),
+});

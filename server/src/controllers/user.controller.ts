@@ -32,13 +32,16 @@ export const updateUserProfile = async (c: Context) => {
     const currentInfo = await db.user.findUnique({ where: { id } });
     let avatarUrl = "";
     if (!currentInfo || id !== currentInfo.id) {
-      return c.text("You are not authorized to perform this action", 401);
+      return c.json(
+        { error: "You are not authorized to perform this action" },
+        401
+      );
     }
     const { avatar } = await c.req.parseBody();
     const { username, password } = c.get("parsedData");
     if (avatar && avatar instanceof File) {
       if (currentInfo.avatar) {
-        await cloudinary.uploader.upload(
+        await cloudinary.uploader.destroy(
           currentInfo.avatar.split("/").pop()?.split(".")[0] as string
         );
       }
@@ -58,10 +61,10 @@ export const updateUserProfile = async (c: Context) => {
         avatar: avatarUrl || currentInfo.avatar,
       },
     });
-    return c.text("Your Profile Updated Successfully");
+    return c.json({ message: "Your Profile Updated Successfully" }, 202);
   } catch (error: any) {
     console.log(error);
-    return c.text("Internal server error", 500);
+    return c.json({ error: "Internal server error" }, 500);
   }
 };
 
