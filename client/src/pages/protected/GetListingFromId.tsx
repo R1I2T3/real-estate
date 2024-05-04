@@ -29,7 +29,7 @@ const GetListingFromId = () => {
     );
   }
   return (
-    <div className="w-[100%] md:h-[100dvh]  flex justify-center items-center ">
+    <div className="w-[100%] md:min-h-[100dvh]  flex justify-center items-center ">
       <Card className="w-[90%] md:w-[80%] py-4 flex flex-col-reverse md:flex-row md:justify-around justify-between items-center">
         <GetListingCardInfo data={data} />
         <img

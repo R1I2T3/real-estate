@@ -53,15 +53,31 @@ export const updateUserProfile = async (c: Context) => {
         algorithm: "bcrypt",
       });
     }
-    await db.user.update({
+    const newData = await db.user.update({
       where: { id },
       data: {
         username: username || currentInfo.username,
         password: newHashedPassword || currentInfo.password,
         avatar: avatarUrl || currentInfo.avatar,
       },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        avatar: true,
+      },
     });
-    return c.json({ message: "Your Profile Updated Successfully" }, 202);
+    return c.json(
+      {
+        message: "Your Profile Updated Successfully",
+        data: {
+          id: newData.id,
+          email: newData.email,
+          imageUrl: newData.avatar,
+        },
+      },
+      202
+    );
   } catch (error: any) {
     console.log(error);
     return c.json({ error: "Internal server error" }, 500);

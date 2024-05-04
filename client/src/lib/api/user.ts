@@ -36,6 +36,7 @@ export const useUpdateProfileMutation = (id: string) => {
       } else {
         toast.success("Profile Update successfully");
       }
+      localStorage.setItem("real-estate-user", JSON.stringify(data.data));
       navigate(`/getprofile/${id}`, {
         replace: true,
       });

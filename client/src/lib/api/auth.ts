@@ -1,11 +1,10 @@
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { LoginSchema, SignUpSchema } from "@/schema";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 export const useSignUpMutation = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
   const mutation = useMutation({
     mutationFn: async (data: z.infer<typeof SignUpSchema>) => {
@@ -19,15 +18,12 @@ export const useSignUpMutation = () => {
       return await response.json();
     },
     onError: () => {
-      toast({ variant: "destructive", title: "Uh oh! Something went wrong." });
+      toast("Uh oh! Something went wrong.");
     },
     onSuccess: (data) => {
       localStorage.setItem("real-estate-user", JSON.stringify(data));
       if (data.error) {
-        return toast({
-          variant: "destructive",
-          title: data.error,
-        });
+        return toast(data.error);
       }
       navigate("/", { replace: true });
     },
@@ -36,7 +32,6 @@ export const useSignUpMutation = () => {
 };
 
 export const useLoginMutation = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
   const mutation = useMutation({
     mutationFn: async (data: z.infer<typeof LoginSchema>) => {
@@ -51,17 +46,11 @@ export const useLoginMutation = () => {
     },
     onError: (error) => {
       console.log(error);
-      toast({
-        variant: "destructive",
-        title: "Some server side error taken Place",
-      });
+      toast("Some server side error taken Place");
     },
     onSuccess: (data) => {
       if (data.error) {
-        return toast({
-          variant: "destructive",
-          title: data.error,
-        });
+        return toast(data.error);
       }
       localStorage.setItem("real-estate-user", JSON.stringify(data));
       navigate("/", {
@@ -73,7 +62,6 @@ export const useLoginMutation = () => {
 };
 
 export const useLogoutMutation = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
   const mutation = useMutation({
     mutationFn: async () => {
@@ -86,17 +74,14 @@ export const useLogoutMutation = () => {
       return await response.json();
     },
     onError: () => {
-      toast({ variant: "destructive", title: "Uh oh! Something went wrong." });
+      toast.error("Uh oh! Something went wrong.");
     },
     onSuccess: (data) => {
       if (data.error) {
-        return toast({
-          variant: "destructive",
-          title: data.error,
-        });
+        return toast.error(data.error);
       }
       localStorage.removeItem("real-estate-user");
-      toast({ title: "User logged out successfully" });
+      toast.success("User logged out successfully");
       navigate("/auth/login");
     },
   });
