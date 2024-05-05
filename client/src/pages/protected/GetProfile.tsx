@@ -33,7 +33,7 @@ const GetProfile = () => {
   }
   console.log(data);
   return (
-    <div className="flex justify-center items-center min-h-[100dvh]">
+    <div className="flex justify-center items-center min-h-[75dvh]">
       <Card className="w-[90%] md:w-[40%] flex flex-col gap-3 justify-center  border-slate-300 p-4">
         <div className="w-[100%]  rounded-full flex justify-center">
           <Avatar className="w-[100px] h-[100px] m-auto">

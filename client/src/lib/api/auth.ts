@@ -3,9 +3,12 @@ import { LoginSchema, SignUpSchema } from "@/schema";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
+import { useContext } from "react";
+import { AuthContext } from "@/context/userContext";
 
 export const useSignUpMutation = () => {
   const navigate = useNavigate();
+  const { setUser } = useContext(AuthContext);
   const mutation = useMutation({
     mutationFn: async (data: z.infer<typeof SignUpSchema>) => {
       const response = await fetch("/api/auth/signup", {
@@ -21,10 +24,12 @@ export const useSignUpMutation = () => {
       toast("Uh oh! Something went wrong.");
     },
     onSuccess: (data) => {
-      localStorage.setItem("real-estate-user", JSON.stringify(data));
       if (data.error) {
         return toast(data.error);
       }
+      localStorage.setItem("real-estate-user", JSON.stringify(data));
+      setUser(data);
+
       navigate("/", { replace: true });
     },
   });
@@ -33,6 +38,7 @@ export const useSignUpMutation = () => {
 
 export const useLoginMutation = () => {
   const navigate = useNavigate();
+  const { setUser } = useContext(AuthContext);
   const mutation = useMutation({
     mutationFn: async (data: z.infer<typeof LoginSchema>) => {
       const response = await fetch("/api/auth/login", {
@@ -53,6 +59,7 @@ export const useLoginMutation = () => {
         return toast(data.error);
       }
       localStorage.setItem("real-estate-user", JSON.stringify(data));
+      setUser(data);
       navigate("/", {
         replace: true,
       });
@@ -80,9 +87,9 @@ export const useLogoutMutation = () => {
       if (data.error) {
         return toast.error(data.error);
       }
-      localStorage.removeItem("real-estate-user");
-      toast.success("User logged out successfully");
       navigate("/auth/login");
+      toast.success("User logged out successfully");
+      localStorage.removeItem("real-estate-user");
     },
   });
   return mutation;

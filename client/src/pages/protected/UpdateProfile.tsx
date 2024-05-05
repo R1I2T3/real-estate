@@ -31,7 +31,7 @@ const UpdateProfile = () => {
   }
 
   return (
-    <div className="flex justify-center items-center  min-h-[100dvh]">
+    <div className="flex justify-center items-center min-h-[75dvh]">
       <Card className="flex flex-col w-[90%] md:w-[40%] justify-center gap-3 px-4 py-7">
         <UpdateProfileForm data={data} />
       </Card>

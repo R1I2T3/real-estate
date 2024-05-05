@@ -1,3 +1,4 @@
+import Header from "@/components/protected/Header";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +22,7 @@ const ProtectedLayout = () => {
   }, [navigate]);
   return (
     <main className="mb-10">
+      <Header />
       <Outlet />
     </main>
   );
