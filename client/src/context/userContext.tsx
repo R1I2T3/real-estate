@@ -6,8 +6,8 @@ interface User {
 }
 
 interface AuthContextType {
-  user: User;
-  setUser: (value: User) => void;
+  user?: User;
+  setUser: (value: User | "") => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -18,7 +18,7 @@ export const AuthContext = createContext<AuthContextType>({
 export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User>(
+  const [user, setUser] = useState<User | "">(
     JSON.parse(localStorage.getItem("real-estate-user")) || null
   );
   return (

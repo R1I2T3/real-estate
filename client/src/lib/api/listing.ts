@@ -1,5 +1,7 @@
 import { useToast } from "@/components/ui/use-toast";
+import { AuthContext } from "@/context/userContext";
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -101,8 +103,9 @@ export const useUpdateListingMutation = (id: string) => {
 };
 
 export const useGetListingByTypeQuery = (type: { type?: string }) => {
+  const { user } = useContext(AuthContext);
   const query = useInfiniteQuery({
-    queryKey: ["listings", type],
+    queryKey: ["listings", type, user?.id],
     queryFn: async ({ pageParam = 0 }: { pageParam: number }) => {
       try {
         let response;

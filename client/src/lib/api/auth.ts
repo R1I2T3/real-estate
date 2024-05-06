@@ -70,6 +70,7 @@ export const useLoginMutation = () => {
 
 export const useLogoutMutation = () => {
   const navigate = useNavigate();
+  const { setUser } = useContext(AuthContext);
   const mutation = useMutation({
     mutationFn: async () => {
       const response = await fetch("/api/auth/logout", {
@@ -87,6 +88,7 @@ export const useLogoutMutation = () => {
       if (data.error) {
         return toast.error(data.error);
       }
+      setUser("");
       navigate("/auth/login");
       toast.success("User logged out successfully");
       localStorage.removeItem("real-estate-user");
