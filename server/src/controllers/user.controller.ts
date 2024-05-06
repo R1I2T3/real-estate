@@ -86,19 +86,21 @@ export const updateUserProfile = async (c: Context) => {
 
 export const getUserListing = async (c: Context) => {
   try {
-    const userID = c.get("user").id;
-    const { skip: skipqueryparam } = c.req.query();
+    const { id, skip: skipqueryparam } = c.req.query();
     const skip = parseInt(skipqueryparam, 10);
-    const userListing = await db.listing.findMany({
-      where: { userID },
-      skip: (skip - 1) * 6,
+    const Listings = await db.listing.findMany({
+      where: { userID: id },
+      skip: skip * 6,
     });
-    if (!userListing.length) {
-      return c.text("There is no user listing", 200);
+    if (Listings.length === 0) {
+      return c.json({ error: "There is no user listing" }, 200);
     }
-    return c.json(userListing);
+    return c.json({ Listings }, 200);
   } catch (error: any) {
     console.log(error.message);
-    return c.text("Failed to get User listing due to some error", 500);
+    return c.json(
+      { error: "Failed to get User listing due to some error" },
+      500
+    );
   }
 };

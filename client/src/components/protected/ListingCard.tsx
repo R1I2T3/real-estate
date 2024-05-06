@@ -10,7 +10,7 @@ const ListingCard = ({ Listing }: ListingCardPropsTypes) => {
       <img
         src={Listing.imageUrl}
         alt=""
-        className="rounded-xl h-[80%] w-[90%] m-auto"
+        className="rounded-xl h-[200px] w-[300px] m-auto md:h-[250px] md:w-[350px] lg:h-[300px] lg:w-[400px]"
       />
       <div className="flex justify-between gap-2">
         <NavLink

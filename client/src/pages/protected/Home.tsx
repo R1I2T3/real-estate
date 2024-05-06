@@ -1,5 +1,4 @@
 import ListingCard from "@/components/protected/ListingCard";
-import Spinner from "@/components/spinner";
 import {
   Select,
   SelectContent,
@@ -62,13 +61,13 @@ const Home = () => {
         <div>{error.message}</div>
       ) : (
         <div className="flex flex-col gap-2">
-          {data.pages.map((page) => {
+          {data?.pages?.map((page) => {
             return (
               <div
                 key={page?.currentPage}
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3   gap-10"
               >
-                {page?.data.Listings.map((listing: getListingFormData) => {
+                {page?.data.Listings?.map((listing: getListingFormData) => {
                   return <ListingCard Listing={listing} key={listing.id} />;
                 })}
               </div>

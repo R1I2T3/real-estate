@@ -1,7 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { number } from "zod";
 export const useGetUserProfileInfoQuery = (id: string) => {
   const query = useQuery({
     queryKey: ["User Profile", id],
@@ -47,15 +46,37 @@ export const useUpdateProfileMutation = (id: string) => {
 };
 
 export const useGetUserListingQuery = (id: { id: string }) => {
-  try {
-    const query = useInfiniteQuery({
-      queryKey: ["listing", id],
-      queryFn: async ({ pageParam }: number) => {
-        const response = await fetch(``);
-      },
-    });
-    return query;
-  } catch (error) {
-    console.log(error);
-  }
+  const query = useInfiniteQuery({
+    queryKey: ["UserListing", id],
+    queryFn: async ({ pageParam = 0 }) => {
+      try {
+        const response = await fetch(
+          `/api/user/getlisting?id=${id}&skip=${pageParam}`
+        );
+        console.log(id);
+
+        const data = await response.json();
+        if (data.error) {
+          return { NoListingError: "There is No Listing" };
+        }
+        return {
+          data,
+          currentPage: pageParam,
+        };
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage =
+        lastPage?.data?.Listings?.length === 6
+          ? allPages?.length > 0
+            ? allPages[allPages?.length - 1].currentPage + 1
+            : 2
+          : undefined;
+      return nextPage;
+    },
+  });
+  return query;
 };
