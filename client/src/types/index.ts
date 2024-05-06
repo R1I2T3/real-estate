@@ -1,4 +1,5 @@
 export interface getListingFormData {
+  id: string;
   name: string;
   description: string;
   address: string;
@@ -11,4 +12,5 @@ export interface getListingFormData {
   type: string;
   offer: boolean;
   imageUrl: string;
+  userID: string;
 }

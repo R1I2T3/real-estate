@@ -19,7 +19,7 @@ const ProtectedLayout = () => {
       }
     };
     checkUserIsAuthenticated();
-  }, [navigate]);
+  }, []);
   return (
     <main className="mb-10">
       <Header />

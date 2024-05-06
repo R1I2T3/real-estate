@@ -87,7 +87,12 @@ export const updateUserProfile = async (c: Context) => {
 export const getUserListing = async (c: Context) => {
   try {
     const userID = c.get("user").id;
-    const userListing = await db.listing.findMany({ where: { userID } });
+    const { skip: skipqueryparam } = c.req.query();
+    const skip = parseInt(skipqueryparam, 10);
+    const userListing = await db.listing.findMany({
+      where: { userID },
+      skip: (skip - 1) * 6,
+    });
     if (!userListing.length) {
       return c.text("There is no user listing", 200);
     }

@@ -1,5 +1,5 @@
 import { useToast } from "@/components/ui/use-toast";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -98,4 +98,66 @@ export const useUpdateListingMutation = (id: string) => {
     },
   });
   return mutation;
+};
+
+const fetchPage = async ({
+  pageParam,
+  type,
+}: {
+  pageParam: number;
+  type?: string;
+}) => {
+  try {
+    let response;
+    if (!type) {
+      response = await fetch(`/api/listing/getlisting?skip=${pageParam}`);
+    } else {
+      response = await fetch(
+        `/api/listing/getlisting?q=${type}&skip=${pageParam}`
+      );
+    }
+    const data = await response.json();
+    return {
+      data,
+      currentPage: pageParam,
+    };
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const useGetListingByTypeQuery = (type: { type?: string }) => {
+  const query = useInfiniteQuery({
+    queryKey: ["listings", type],
+    queryFn: async ({ pageParam = 0 }: { pageParam: number }) => {
+      try {
+        console.log(type);
+        let response;
+        if (!type) {
+          response = await fetch(`/api/listing/getlisting?skip=${pageParam}`);
+        } else {
+          response = await fetch(
+            `/api/listing/getlisting?q=${type}&skip=${pageParam}`
+          );
+        }
+        const data = await response.json();
+        return {
+          data,
+          currentPage: pageParam,
+        };
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage =
+        lastPage?.data?.Listings.length === 6
+          ? allPages.length > 0
+            ? allPages[allPages.length - 1].currentPage + 1
+            : 2
+          : undefined;
+      return nextPage;
+    },
+  });
+  return query;
 };

@@ -9,6 +9,8 @@ interface GetListingCardInfoPropsType {
 }
 const GetListingCardInfo = ({ data }: GetListingCardInfoPropsType) => {
   const { user } = useContext(AuthContext);
+  console.log(data);
+
   return (
     <div className="flex flex-col justify-start px-4 gap-2 md:w-[50%]">
       <div className="flex justify-between items-center">
@@ -16,10 +18,9 @@ const GetListingCardInfo = ({ data }: GetListingCardInfoPropsType) => {
           {data.name}
         </h1>
         <Avatar className=" w-[50px] h-[50px] md:w-[100px] md:h-[100px]">
-          <NavLink to={`/getprofile/${user.id}`}>
-            <AvatarImage src={user.imageUrl || "defaultPic.png"} />
+          <NavLink to={`/getprofile/${data.userID}`}>
+            <AvatarImage src={data.user.avatar || "/defaultPic.png"} />
           </NavLink>
-          <AvatarFallback>PF</AvatarFallback>
         </Avatar>
       </div>
       <section className="gap-1">

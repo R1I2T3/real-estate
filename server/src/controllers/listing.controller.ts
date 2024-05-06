@@ -29,7 +29,10 @@ export const createListing = async (c: Context) => {
 export const getListingById = async (c: Context) => {
   try {
     const listingId = c.req.param("id");
-    const Listing = await db.listing.findUnique({ where: { id: listingId } });
+    const Listing = await db.listing.findUnique({
+      where: { id: listingId },
+      include: { user: { select: { avatar: true } } },
+    });
     if (!Listing) {
       return c.json({ error: "Wrong listing is provided" }, 500);
     }
@@ -114,14 +117,35 @@ export const updateListing = async (c: Context) => {
 
 export const getListingByType = async (c: Context) => {
   try {
-    const { q } = c.req.query();
-    const Listings = await db.listing.findMany({ where: { type: q } });
+    const { q, skip: skipqueryparam } = c.req.query();
+    const skip = parseInt(skipqueryparam, 10);
+    let Listings;
+    console.log(q);
+
+    if (!q || q === "") {
+      Listings = await db.listing.findMany({
+        skip: skip * 6,
+        take: 6,
+      });
+    } else {
+      let type;
+      if (q === "Mid-century-Modern") {
+        type = "Mid-century Modern";
+      } else {
+        type = q;
+      }
+      Listings = await db.listing.findMany({
+        where: { type },
+        skip: skip * 6,
+        take: 6,
+      });
+    }
     if (Listings.length === 0) {
-      return c.text("There is no Listing with this type", 404);
+      return c.json({ ListingEnd: "There is no Listing with this type" }, 404);
     }
     return c.json({ Listings }, 200);
   } catch (error: any) {
     console.log(error.message);
-    return c.text("Failed to getListing By Type", 500);
+    return c.json({ error: "Failed to getListing By Type" }, 500);
   }
 };

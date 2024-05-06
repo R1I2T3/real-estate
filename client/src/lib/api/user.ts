@@ -1,6 +1,7 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { number } from "zod";
 export const useGetUserProfileInfoQuery = (id: string) => {
   const query = useQuery({
     queryKey: ["User Profile", id],
@@ -43,4 +44,18 @@ export const useUpdateProfileMutation = (id: string) => {
     },
   });
   return mutation;
+};
+
+export const useGetUserListingQuery = (id: { id: string }) => {
+  try {
+    const query = useInfiniteQuery({
+      queryKey: ["listing", id],
+      queryFn: async ({ pageParam }: number) => {
+        const response = await fetch(``);
+      },
+    });
+    return query;
+  } catch (error) {
+    console.log(error);
+  }
 };

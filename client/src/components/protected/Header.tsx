@@ -1,8 +1,7 @@
 import { AuthContext } from "@/context/userContext";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { LogOutButton } from "./LogOutButton";
-import { AvatarImage, Avatar } from "../ui/avatar";
 import MobileViewHeader from "./MobileViewHeader";
 
 const Header = () => {
@@ -29,12 +28,15 @@ const Header = () => {
         >
           Create Listing
         </NavLink>
-        <LogOutButton />
-        <NavLink to={`/getprofile/${user?.id}`}>
-          <Avatar>
-            <AvatarImage src={user?.imageUrl || "defaultPic.png"} />
-          </Avatar>
+        <NavLink
+          to={`/getprofile/${user?.id}`}
+          className={
+            "font-light font-serif text-lg  hover:text-blue-800 hover:underline"
+          }
+        >
+          Profile
         </NavLink>
+        <LogOutButton />
       </nav>
       <nav className="block md:hidden">
         <MobileViewHeader id={user?.id} />
