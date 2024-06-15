@@ -16,6 +16,7 @@ export const useGetUserProfileInfoQuery = (id: string) => {
 export const useUpdateProfileMutation = (id: string) => {
   const navigate = useNavigate();
   const mutation = useMutation({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mutationFn: async (data: any) => {
       const response = await fetch("/api/user/update", {
         method: "PUT",

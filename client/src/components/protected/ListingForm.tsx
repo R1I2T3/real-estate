@@ -15,7 +15,7 @@ import { ProcessDataForFormUpdate } from "@/utils";
 interface ListingFormProps {
   InputFormData?: getListingFormData;
   zodSchema: Schema;
-  mutationFunction: (formdata: any) => any;
+  mutationFunction: (formdata: FormData) => any;
   isUpdate?: boolean;
 }
 const ListingForm = ({

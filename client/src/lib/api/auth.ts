@@ -58,8 +58,8 @@ export const useLoginMutation = () => {
       if (data.error) {
         return toast(data.error);
       }
-      localStorage.setItem("real-estate-user", JSON.stringify(data));
       setUser(data);
+      localStorage.setItem("real-estate-user", JSON.stringify(data));
       navigate("/", {
         replace: true,
       });
@@ -79,19 +79,21 @@ export const useLogoutMutation = () => {
           "content-type": "application/json",
         },
       });
-      return await response.json();
+      const data = await response.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      return data;
     },
     onError: () => {
       toast.error("Uh oh! Something went wrong.");
     },
-    onSuccess: (data) => {
-      if (data.error) {
-        return toast.error(data.error);
-      }
+    onSuccess: () => {
       setUser("");
+      localStorage.removeItem("real-estate-user");
+
       navigate("/auth/login");
       toast.success("User logged out successfully");
-      localStorage.removeItem("real-estate-user");
     },
   });
   return mutation;
